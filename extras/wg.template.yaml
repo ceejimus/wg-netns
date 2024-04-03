@@ -1,0 +1,28 @@
+name: <netns_name>
+base_netns: null
+managed: true
+dns-server: [#.#.#.#]
+pre-up: echo pre-up from managed netns
+post-up:
+  - host-namespace: true
+    command: echo post-up from host netns
+  - host-namespace: false
+    command: echo Post-up from managed netns
+pre-down: echo pre-down from managed netns
+post-down: echo post-down from managed netns
+interfaces:
+  - name: <wireguard_network_if_name>
+    address:
+      - #.#.#.#/#
+    private-key: <private_key>
+    listen-port: 56789
+    fwmark: 0x0000
+    mtu: 1420
+    peers:
+      - public-key: <peer_public_key>
+        preshared-key: <peer_preshared_key> 
+        endpoint: <peer_endpoint_url>:<peer_endpoint_port>
+        persistent-keepalive: 25
+        allowed-ips:
+          - 0.0.0.0/0
+          - ::/0
